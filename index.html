@@ -3,159 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facebook Ads Dashboard - Miami Event Heroes</title>
+    <title>Club de Héroes - Miami Event Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #1877f2;
-            --secondary-color: #42a5f5;
-            --success-color: #4caf50;
-            --warning-color: #ff9800;
-            --danger-color: #f44336;
-            --dark-color: #2c3e50;
-            --light-color: #ecf0f1;
+            --miami-blue: #00D4FF;
+            --miami-orange: #FF8C00;
+            --miami-pink: #FF1493;
+            --success-color: #28A745;
+            --warning-color: #FFC107;
+            --gradient-bg: linear-gradient(135deg, #00D4FF 0%, #FF8C00 50%, #FF1493 100%);
+            --card-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            --hero-gradient: linear-gradient(135deg, #FF1493 0%, #FF8C00 100%);
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-bg);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
         }
 
         .dashboard-container {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.15);
             margin: 20px;
-            padding: 30px;
+            padding: 35px;
+            animation: fadeIn 1s ease-in;
         }
 
         .header-section {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: var(--hero-gradient);
             color: white;
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 35px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-section::before {
+            content: '🌴';
+            position: absolute;
+            top: 15px;
+            right: 30px;
+            font-size: 3rem;
+            opacity: 0.3;
+            animation: float 6s ease-in-out infinite;
         }
 
         .kpi-card {
             background: white;
-            border-radius: 15px;
+            border-radius: 20px;
             padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            border-left: 5px solid var(--primary-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 25px;
+            box-shadow: var(--card-shadow);
+            border-left: 6px solid var(--miami-blue);
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(45deg, transparent 40%, rgba(0, 212, 255, 0.05) 100%);
+            border-radius: 50%;
         }
 
         .kpi-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+            border-left-color: var(--miami-orange);
         }
 
         .kpi-value {
             font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
+            font-weight: 700;
+            color: var(--miami-blue);
             margin-bottom: 10px;
         }
 
         .kpi-label {
             color: #666;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             text-transform: uppercase;
             letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .kpi-desc {
+            font-size: 0.85rem;
+            color: var(--success-color);
+            font-weight: 600;
         }
 
         .chart-container {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .performance-badge {
-            padding: 8px 16px;
             border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: var(--card-shadow);
         }
 
-        .badge-excellent {
-            background: var(--success-color);
-            color: white;
+        .chart-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            text-align: center;
         }
 
-        .badge-good {
-            background: var(--warning-color);
-            color: white;
+        .winners-section {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 40px rgba(255, 20, 147, 0.2);
         }
 
-        .badge-poor {
-            background: var(--danger-color);
-            color: white;
-        }
-
-        .comparison-table {
+        .winner-card {
             background: white;
             border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 5px solid var(--miami-orange);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .winner-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .winner-badge {
+            background: var(--miami-orange);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .performance-table {
+            background: white;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--card-shadow);
         }
 
         .table th {
-            background: var(--primary-color);
+            background: var(--miami-blue);
             color: white;
             border: none;
             padding: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
         }
 
         .table td {
             padding: 15px;
             vertical-align: middle;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        .progress-bar-custom {
-            height: 8px;
-            border-radius: 10px;
-            background: var(--light-color);
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--success-color), var(--primary-color));
-            border-radius: 10px;
-            transition: width 0.5s ease;
-        }
-
-        .recommendation-card {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        .insights-section {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             color: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin-top: 20px;
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 25px;
+            box-shadow: 0 15px 40px rgba(17, 153, 142, 0.3);
         }
 
-        .metric-comparison {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
+        .format-analysis {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 25px;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
         }
 
-        .chart-title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: var(--dark-color);
-            margin-bottom: 20px;
-            text-align: center;
+        .emoji-large {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        .stat-highlight {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
         }
 
         @media (max-width: 768px) {
@@ -169,68 +220,79 @@
             }
         }
 
-        .loading-animation {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.8s ease-in;
-        }
-
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .pulse-miami {
+            animation: pulseMiami 3s infinite;
+        }
+
+        @keyframes pulseMiami {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
 <body>
     <div class="container-fluid">
-        <div class="dashboard-container fade-in">
+        <div class="dashboard-container">
             <!-- Header Section -->
             <div class="header-section">
-                <h1><i class="fab fa-facebook-square"></i> Facebook Ads Dashboard</h1>
-                <h3>Miami Event Heroes - Septiembre 2025</h3>
-                <p>Análisis de Rendimiento Publicitario | 1-8 Septiembre 2025</p>
+                <h1><i class="fas fa-trophy"></i> Club de Héroes</h1>
+                <h2>Miami Event Dashboard</h2>
+                <p><i class="far fa-calendar-alt"></i> 01 - 16 Septiembre 2025 | <i class="fas fa-target"></i> Campaña de Awareness y Engagement</p>
             </div>
 
             <!-- KPIs Section -->
             <div class="row">
-                <div class="col-md-3 col-sm-6">
-                    <div class="kpi-card">
-                        <div class="kpi-value">$347.35</div>
-                        <div class="kpi-label">Inversión Total</div>
-                        <div class="performance-badge badge-good">Dentro del Presupuesto</div>
+                <div class="col-md-2 col-6">
+                    <div class="kpi-card pulse-miami">
+                        <div class="kpi-value">671</div>
+                        <div class="kpi-label">Total Clics</div>
+                        <div class="kpi-desc">🎯 Gran interacción</div>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-2 col-6">
                     <div class="kpi-card">
-                        <div class="kpi-value">1,427</div>
-                        <div class="kpi-label">Landing Page Views</div>
-                        <div class="performance-badge badge-excellent">Objetivo Cumplido</div>
+                        <div class="kpi-value">$1,243</div>
+                        <div class="kpi-label">Inversión</div>
+                        <div class="kpi-desc">💰 Eficiente</div>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-2 col-6">
                     <div class="kpi-card">
-                        <div class="kpi-value">$0.24</div>
-                        <div class="kpi-label">Costo por Resultado</div>
-                        <div class="performance-badge badge-excellent">Excelente</div>
+                        <div class="kpi-value">19,893</div>
+                        <div class="kpi-label">Alcance</div>
+                        <div class="kpi-desc">🌟 Excelente cobertura</div>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-2 col-6">
                     <div class="kpi-card">
-                        <div class="kpi-value">4.45%</div>
+                        <div class="kpi-value">54,317</div>
+                        <div class="kpi-label">Impresiones</div>
+                        <div class="kpi-desc">👀 Alta visibilidad</div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-6">
+                    <div class="kpi-card">
+                        <div class="kpi-value">2.63%</div>
                         <div class="kpi-label">CTR Promedio</div>
-                        <div class="performance-badge badge-good">Sobre Promedio</div>
+                        <div class="kpi-desc">🚀 Sobre benchmark</div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-6">
+                    <div class="kpi-card">
+                        <div class="kpi-value">$22.88</div>
+                        <div class="kpi-label">CPM</div>
+                        <div class="kpi-desc">📈 Competitivo</div>
                     </div>
                 </div>
             </div>
@@ -239,14 +301,14 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="chart-container">
-                        <div class="chart-title">Comparación CTR por Anuncio</div>
-                        <canvas id="ctrChart"></canvas>
+                        <div class="chart-title">Performance por Conjunto de Anuncios</div>
+                        <canvas id="adsetPerformanceChart"></canvas>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="chart-container">
-                        <div class="chart-title">Distribución de Inversión</div>
-                        <canvas id="spendChart"></canvas>
+                        <div class="chart-title">Top 5 Anuncios por Clics</div>
+                        <canvas id="topAdsChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -254,14 +316,37 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="chart-container">
-                        <div class="chart-title">Costo por Resultado</div>
-                        <canvas id="costChart"></canvas>
+                        <div class="chart-title">CTR por Formato de Anuncio</div>
+                        <canvas id="formatCTRChart"></canvas>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="chart-container">
-                        <div class="chart-title">Resultados por Anuncio</div>
-                        <canvas id="resultsChart"></canvas>
+                        <div class="chart-title">Distribución de Inversión</div>
+                        <canvas id="spendDistributionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Winners Section -->
+            <div class="winners-section">
+                <h3 class="text-center mb-4"><span class="emoji-large">🏆</span>Anuncios Ganadores por Conjunto</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="winner-card">
+                            <div class="winner-badge">🥇 Miami Event Heroes Broad</div>
+                            <h6><strong>Reel 1</strong></h6>
+                            <p><strong>335 clics</strong> | CTR: <strong>3.45%</strong> | Alcance: 12,020</p>
+                            <small>💡 El formato video domina con más del doble de CTR que imágenes</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="winner-card">
+                            <div class="winner-badge">🎯 Retargeting Miami Event</div>
+                            <h6><strong>Reel Promo 1_V1</strong></h6>
+                            <p><strong>17 clics</strong> | CTR: <strong>3.07%</strong> | Alcance: 985</p>
+                            <small>🔥 Mejor performance en retargeting - audiencia cálida responde mejor</small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -269,48 +354,47 @@
             <!-- Performance Table -->
             <div class="row">
                 <div class="col-12">
-                    <div class="comparison-table">
-                        <h4 class="chart-title" style="padding: 20px 0;">Análisis Detallado por Anuncio</h4>
+                    <div class="performance-table">
+                        <h4 class="chart-title" style="padding: 25px 0;">Análisis Detallado de Formatos</h4>
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Anuncio</th>
                                     <th>Formato</th>
+                                    <th>Anuncios</th>
+                                    <th>Clics Totales</th>
+                                    <th>CTR Promedio</th>
+                                    <th>Alcance</th>
                                     <th>Inversión</th>
-                                    <th>Resultados</th>
-                                    <th>CTR</th>
-                                    <th>Costo/Resultado</th>
-                                    <th>Performance</th>
+                                    <th>Eficiencia</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><strong>Reel 1</strong></td>
-                                    <td><span class="badge bg-primary">Video</span></td>
-                                    <td>$284.08</td>
-                                    <td>1,224</td>
-                                    <td>6.69%</td>
-                                    <td>$0.23</td>
-                                    <td>
-                                        <div class="progress-bar-custom">
-                                            <div class="progress-fill" style="width: 95%"></div>
-                                        </div>
-                                        <small class="text-success">Excelente</small>
-                                    </td>
+                                    <td><span class="badge" style="background: #FF1493; color: white;"><i class="fas fa-video"></i> Reels</span></td>
+                                    <td>4 variaciones</td>
+                                    <td><strong>438</strong></td>
+                                    <td><strong>3.46%</strong></td>
+                                    <td>18,484</td>
+                                    <td>$746.67</td>
+                                    <td><span class="badge bg-success">🔥 Champion</span></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>IMG_V1</strong></td>
-                                    <td><span class="badge bg-secondary">Imagen</span></td>
-                                    <td>$55.98</td>
-                                    <td>171</td>
-                                    <td>1.02%</td>
-                                    <td>$0.33</td>
-                                    <td>
-                                        <div class="progress-bar-custom">
-                                            <div class="progress-fill" style="width: 35%"></div>
-                                        </div>
-                                        <small class="text-warning">Mejorable</small>
-                                    </td>
+                                    <td><span class="badge" style="background: #00D4FF; color: white;"><i class="fas fa-image"></i> Imágenes</span></td>
+                                    <td>4 variaciones</td>
+                                    <td><strong>155</strong></td>
+                                    <td>1.65%</td>
+                                    <td>8,252</td>
+                                    <td>$331.21</td>
+                                    <td><span class="badge bg-warning">⚡ Mejorable</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge" style="background: #FF8C00; color: white;"><i class="fas fa-images"></i> Carrusel</span></td>
+                                    <td>1 variación</td>
+                                    <td><strong>73</strong></td>
+                                    <td>1.66%</td>
+                                    <td>4,754</td>
+                                    <td>$136.90</td>
+                                    <td><span class="badge bg-info">💎 Potencial</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -318,25 +402,70 @@
                 </div>
             </div>
 
-            <!-- Recommendations Section -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="recommendation-card">
-                        <h4><i class="fas fa-lightbulb"></i> Recomendaciones Estratégicas</h4>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <h6><i class="fas fa-chart-line"></i> Optimización de Presupuesto</h6>
-                                <p>Reasignar 70% del presupuesto al formato Reel debido a su CTR 6.5x superior</p>
-                            </div>
-                            <div class="col-md-4">
-                                <h6><i class="fas fa-video"></i> Contenido Creativo</h6>
-                                <p>Desarrollar más variaciones de video similar al Reel 1 exitoso</p>
-                            </div>
-                            <div class="col-md-4">
-                                <h6><i class="fas fa-target"></i> Audiencia</h6>
-                                <p>El audience "Broad" responde mejor al video. Considerar segmentación específica</p>
-                            </div>
+            <!-- Format Analysis -->
+            <div class="format-analysis">
+                <h4><span class="emoji-large">📊</span>Análisis por Formato Creativo</h4>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="stat-highlight">
+                            <h6><i class="fas fa-video"></i> Reels - El Formato Ganador</h6>
+                            <ul>
+                                <li><strong>CTR 2.1x superior</strong> vs imágenes estáticas</li>
+                                <li><strong>65% de los clics totales</strong> con solo 4 variaciones</li>
+                                <li>Mejor performer: <strong>Reel 1</strong> con 3.45% CTR</li>
+                            </ul>
                         </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-highlight">
+                            <h6><i class="fas fa-bullseye"></i> Target Audience Performance</h6>
+                            <ul>
+                                <li><strong>Broad Audience:</strong> 584 clics (87% del total)</li>
+                                <li><strong>Retargeting:</strong> 87 clics (CTR superior 2.68%)</li>
+                                <li>Audiencia receptiva al <strong>contenido de evento</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-highlight">
+                            <h6><i class="fas fa-chart-line"></i> Eficiencia de Campaña</h6>
+                            <ul>
+                                <li><strong>CPM competitivo:</strong> $22.88 vs benchmark $25-35</li>
+                                <li><strong>CTR sobre promedio:</strong> 2.63% vs industria 1.8%</li>
+                                <li><strong>Alcance premium:</strong> 19,893 usuarios únicos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Insights Section -->
+            <div class="insights-section">
+                <h4><span class="emoji-large">💡</span>Insights Clave y Recomendaciones</h4>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6><span class="emoji-large">🎯</span>Lo que más funciona</h6>
+                        <ul>
+                            <li><strong>Formato Reel</strong> genera 2x más engagement</li>
+                            <li><strong>Broad Audience</strong> responde mejor que segmentaciones estrictas</li>
+                            <li><strong>Retargeting</strong> muestra CTR superior (2.68%)</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6><span class="emoji-large">🚀</span>Oportunidades de optimización</h6>
+                        <ul>
+                            <li>Crear <strong>más variaciones de Reel 1</strong></li>
+                            <li>Expandir <strong>audiencia de retargeting</strong></li>
+                            <li>Testar <strong>carruseles con video</strong> en primera slide</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6><span class="emoji-large">📈</span>Próxima fase</h6>
+                        <ul>
+                            <li>Enfocar <strong>80% presupuesto en formato Reel</strong></li>
+                            <li>Crear <strong>variaciones con diferentes hooks</strong></li>
+                            <li>Implementar <strong>pixel de conversión</strong> para eventos</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -344,66 +473,82 @@
     </div>
 
     <script>
-        // Chart configurations
+        // Configuraciones globales
         Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
         Chart.defaults.color = '#666';
 
-        // CTR Comparison Chart
-        const ctrCtx = document.getElementById('ctrChart').getContext('2d');
-        new Chart(ctrCtx, {
+        // Performance por Conjunto de Anuncios
+        const adsetCtx = document.getElementById('adsetPerformanceChart').getContext('2d');
+        new Chart(adsetCtx, {
             type: 'bar',
             data: {
-                labels: ['Reel 1', 'IMG_V1'],
+                labels: ['Broad Audience', 'Retargeting'],
                 datasets: [{
-                    label: 'CTR (%)',
-                    data: [6.69, 1.02],
-                    backgroundColor: [
-                        'rgba(24, 119, 242, 0.8)',
-                        'rgba(66, 165, 245, 0.8)'
-                    ],
-                    borderColor: [
-                        'rgba(24, 119, 242, 1)',
-                        'rgba(66, 165, 245, 1)'
-                    ],
-                    borderWidth: 2,
+                    label: 'Clics',
+                    data: [584, 87],
+                    backgroundColor: ['#FF1493', '#00D4FF'],
+                    borderRadius: 12,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // Top 5 Anuncios
+        const topAdsCtx = document.getElementById('topAdsChart').getContext('2d');
+        new Chart(topAdsCtx, {
+            type: 'horizontalBar',
+            data: {
+                labels: ['Reel 1', 'IMG_V1', 'Carrusel_V1', 'Reel Promo 1_V1', 'Reel Promo 1_V1 (RT)'],
+                datasets: [{
+                    label: 'Clics',
+                    data: [335, 113, 68, 25, 17],
+                    backgroundColor: ['#FF1493', '#00D4FF', '#FF8C00', '#FFC107', '#28A745'],
                     borderRadius: 8
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { x: { beginAtZero: true } }
+            }
+        });
+
+        // CTR por Formato
+        const formatCTRCtx = document.getElementById('formatCTRChart').getContext('2d');
+        new Chart(formatCTRCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Reels (3.46%)', 'Imágenes (1.65%)', 'Carrusel (1.66%)'],
+                datasets: [{
+                    data: [3.46, 1.65, 1.66],
+                    backgroundColor: ['#FF1493', '#00D4FF', '#FF8C00'],
+                    borderWidth: 4,
+                    borderColor: '#fff'
                 }]
             },
             options: {
                 responsive: true,
                 plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0,0,0,0.1)'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
+                    legend: { position: 'bottom', labels: { padding: 20 } }
                 }
             }
         });
 
-        // Spend Distribution Chart
-        const spendCtx = document.getElementById('spendChart').getContext('2d');
+        // Distribución de Inversión
+        const spendCtx = document.getElementById('spendDistributionChart').getContext('2d');
         new Chart(spendCtx, {
-            type: 'doughnut',
+            type: 'pie',
             data: {
-                labels: ['Reel 1', 'IMG_V1'],
+                labels: ['Broad Audience ($1,049)', 'Retargeting ($193)'],
                 datasets: [{
-                    data: [284.08, 55.98],
-                    backgroundColor: [
-                        'rgba(24, 119, 242, 0.8)',
-                        'rgba(66, 165, 245, 0.8)'
-                    ],
+                    data: [1049.51, 193.44],
+                    backgroundColor: ['#FF1493', '#00D4FF'],
                     borderWidth: 3,
                     borderColor: '#fff'
                 }]
@@ -411,114 +556,20 @@
             options: {
                 responsive: true,
                 plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            usePointStyle: true
-                        }
-                    }
+                    legend: { position: 'bottom', labels: { padding: 20 } }
                 }
             }
         });
 
-        // Cost per Result Chart
-        const costCtx = document.getElementById('costChart').getContext('2d');
-        new Chart(costCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Reel 1', 'IMG_V1'],
-                datasets: [{
-                    label: 'Costo por Resultado ($)',
-                    data: [0.23, 0.33],
-                    backgroundColor: [
-                        'rgba(76, 175, 80, 0.8)',
-                        'rgba(255, 152, 0, 0.8)'
-                    ],
-                    borderColor: [
-                        'rgba(76, 175, 80, 1)',
-                        'rgba(255, 152, 0, 1)'
-                    ],
-                    borderWidth: 2,
-                    borderRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0,0,0,0.1)'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-
-        // Results Chart
-        const resultsCtx = document.getElementById('resultsChart').getContext('2d');
-        new Chart(resultsCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Reel 1', 'IMG_V1'],
-                datasets: [{
-                    label: 'Landing Page Views',
-                    data: [1224, 171],
-                    backgroundColor: [
-                        'rgba(156, 39, 176, 0.8)',
-                        'rgba(233, 30, 99, 0.8)'
-                    ],
-                    borderColor: [
-                        'rgba(156, 39, 176, 1)',
-                        'rgba(233, 30, 99, 1)'
-                    ],
-                    borderWidth: 2,
-                    borderRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0,0,0,0.1)'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-
-        // Add loading animation on page load
+        // Animaciones al cargar
         window.addEventListener('load', function() {
             setTimeout(() => {
                 document.querySelectorAll('.kpi-card').forEach((card, index) => {
                     setTimeout(() => {
-                        card.style.animation = 'fadeIn 0.6s ease-in';
-                    }, index * 200);
+                        card.style.animation = 'fadeIn 0.8s ease-in';
+                    }, index * 150);
                 });
-            }, 300);
+            }, 500);
         });
     </script>
 </body>
