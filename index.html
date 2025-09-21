@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Club de Héroes - Miami Event Dashboard</title>
+    <title>CP Hispanomedios - Informe Final Miami Event</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --miami-blue: #00D4FF;
-            --miami-orange: #FF8C00;
-            --miami-pink: #FF1493;
-            --success-color: #28A745;
-            --warning-color: #FFC107;
-            --gradient-bg: linear-gradient(135deg, #00D4FF 0%, #FF8C00 50%, #FF1493 100%);
+            --miami-blue: #00b4d8;
+            --miami-coral: #ff6b6b;
+            --miami-green: #06ffa5;
+            --miami-purple: #8338ec;
+            --miami-yellow: #ffbe0b;
+            --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --card-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-            --hero-gradient: linear-gradient(135deg, #FF1493 0%, #FF8C00 100%);
+            --hero-gradient: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
         }
 
         body {
@@ -32,7 +32,7 @@
             box-shadow: 0 25px 70px rgba(0, 0, 0, 0.15);
             margin: 20px;
             padding: 35px;
-            animation: fadeIn 1s ease-in;
+            animation: slideInUp 1s ease-out;
         }
 
         .header-section {
@@ -53,7 +53,17 @@
             right: 30px;
             font-size: 3rem;
             opacity: 0.3;
-            animation: float 6s ease-in-out infinite;
+            animation: sway 4s ease-in-out infinite;
+        }
+
+        .status-banner {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
         }
 
         .kpi-card {
@@ -65,45 +75,32 @@
             border-left: 6px solid var(--miami-blue);
             transition: all 0.3s ease;
             text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .kpi-card::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(45deg, transparent 40%, rgba(0, 212, 255, 0.05) 100%);
-            border-radius: 50%;
         }
 
         .kpi-card:hover {
             transform: translateY(-8px) scale(1.02);
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
-            border-left-color: var(--miami-orange);
+            border-left-color: var(--miami-coral);
         }
 
         .kpi-value {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 700;
             color: var(--miami-blue);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .kpi-label {
             color: #666;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
 
         .kpi-desc {
-            font-size: 0.85rem;
-            color: var(--success-color);
+            font-size: 0.8rem;
+            color: var(--miami-green);
             font-weight: 600;
         }
 
@@ -116,44 +113,11 @@
         }
 
         .chart-title {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 600;
             color: #2c3e50;
             margin-bottom: 25px;
             text-align: center;
-        }
-
-        .winners-section {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 25px;
-            box-shadow: 0 15px 40px rgba(255, 20, 147, 0.2);
-        }
-
-        .winner-card {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-left: 5px solid var(--miami-orange);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .winner-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .winner-badge {
-            background: var(--miami-orange);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            display: inline-block;
-            margin-bottom: 10px;
         }
 
         .performance-table {
@@ -179,27 +143,35 @@
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
+        .metric-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-excellent {
+            background: var(--miami-green);
+            color: #000;
+        }
+
+        .badge-good {
+            background: var(--miami-blue);
+            color: white;
+        }
+
+        .badge-average {
+            background: var(--miami-yellow);
+            color: #000;
+        }
+
         .insights-section {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            background: linear-gradient(135deg, #8338ec 0%, #9d4edd 100%);
             color: white;
             padding: 30px;
             border-radius: 20px;
             margin-top: 25px;
-            box-shadow: 0 15px 40px rgba(17, 153, 142, 0.3);
-        }
-
-        .format-analysis {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 20px;
-            margin-top: 25px;
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
-        }
-
-        .emoji-large {
-            font-size: 1.5rem;
-            margin-right: 10px;
+            box-shadow: 0 15px 40px rgba(131, 56, 236, 0.3);
         }
 
         .stat-highlight {
@@ -209,6 +181,25 @@
             margin: 10px 0;
         }
 
+        .pixel-section {
+            background: linear-gradient(135deg, #06ffa5 0%, #00d4aa 100%);
+            color: #000;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(6, 255, 165, 0.3);
+        }
+
+        .format-comparison {
+            background: linear-gradient(135deg, #ffbe0b 0%, #fb8500 100%);
+            color: #000;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 40px rgba(255, 190, 11, 0.3);
+        }
+
         @media (max-width: 768px) {
             .dashboard-container {
                 margin: 10px;
@@ -216,22 +207,22 @@
             }
             
             .kpi-value {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+        @keyframes sway {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
         }
 
         .pulse-miami {
-            animation: pulseMiami 3s infinite;
+            animation: pulseMiami 2s infinite;
         }
 
         @keyframes pulseMiami {
@@ -246,53 +237,99 @@
         <div class="dashboard-container">
             <!-- Header Section -->
             <div class="header-section">
-                <h1><i class="fas fa-trophy"></i> Club de Héroes</h1>
-                <h2>Miami Event Dashboard</h2>
-                <p><i class="far fa-calendar-alt"></i> 01 - 16 Septiembre 2025 | <i class="fas fa-target"></i> Campaña de Awareness y Engagement</p>
+                <h1><i class="fas fa-city"></i> CP Hispanomedios</h1>
+                <h2>Informe Final - Campaña Miami Event</h2>
+                <p><i class="far fa-calendar-alt"></i> 17 - 20 Septiembre 2025 | <i class="fas fa-bullseye"></i> Campaña de Retargeting para Evento</p>
+            </div>
+
+            <!-- Status Banner -->
+            <div class="status-banner">
+                <h4><i class="fas fa-flag-checkered"></i> CAMPAÑA FINALIZADA</h4>
+                <p><strong>Campaña completada exitosamente.</strong> Datos recopilados para optimización de futuras campañas de podcast.</p>
+            </div>
+
+            <!-- Pixel Data Section -->
+            <div class="pixel-section">
+                <h4><i class="fas fa-chart-line"></i> Métricas del Pixel - Resultados Destacados</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3><strong>967</strong> <i class="fas fa-eye"></i></h3>
+                        <p><strong>Page Views Generados</strong><br>Alto interés demostrado por la audiencia</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h3><strong>77</strong> <i class="fas fa-shopping-cart"></i></h3>
+                        <p><strong>Inicios de Checkout</strong><br>Intención de compra clara</p>
+                    </div>
+                </div>
             </div>
 
             <!-- KPIs Section -->
             <div class="row">
                 <div class="col-md-2 col-6">
                     <div class="kpi-card pulse-miami">
-                        <div class="kpi-value">671</div>
-                        <div class="kpi-label">Total Clics</div>
-                        <div class="kpi-desc">🎯 Gran interacción</div>
-                    </div>
-                </div>
-                <div class="col-md-2 col-6">
-                    <div class="kpi-card">
-                        <div class="kpi-value">$1,243</div>
-                        <div class="kpi-label">Inversión</div>
-                        <div class="kpi-desc">💰 Eficiente</div>
-                    </div>
-                </div>
-                <div class="col-md-2 col-6">
-                    <div class="kpi-card">
-                        <div class="kpi-value">19,893</div>
+                        <div class="kpi-value">3,443</div>
                         <div class="kpi-label">Alcance</div>
-                        <div class="kpi-desc">🌟 Excelente cobertura</div>
+                        <div class="kpi-desc">Usuarios únicos</div>
                     </div>
                 </div>
                 <div class="col-md-2 col-6">
                     <div class="kpi-card">
-                        <div class="kpi-value">54,317</div>
+                        <div class="kpi-value">8,472</div>
                         <div class="kpi-label">Impresiones</div>
-                        <div class="kpi-desc">👀 Alta visibilidad</div>
+                        <div class="kpi-desc">Total views</div>
                     </div>
                 </div>
                 <div class="col-md-2 col-6">
                     <div class="kpi-card">
-                        <div class="kpi-value">2.63%</div>
-                        <div class="kpi-label">CTR Promedio</div>
-                        <div class="kpi-desc">🚀 Sobre benchmark</div>
+                        <div class="kpi-value">128</div>
+                        <div class="kpi-label">Clicks</div>
+                        <div class="kpi-desc">Al sitio web</div>
                     </div>
                 </div>
                 <div class="col-md-2 col-6">
                     <div class="kpi-card">
-                        <div class="kpi-value">$22.88</div>
-                        <div class="kpi-label">CPM</div>
-                        <div class="kpi-desc">📈 Competitivo</div>
+                        <div class="kpi-value">2.58%</div>
+                        <div class="kpi-label">CTR</div>
+                        <div class="kpi-desc">Click-through rate</div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-6">
+                    <div class="kpi-card">
+                        <div class="kpi-value">$297.55</div>
+                        <div class="kpi-label">Inversión</div>
+                        <div class="kpi-desc">Total gastado</div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-6">
+                    <div class="kpi-card">
+                        <div class="kpi-value">7.96%</div>
+                        <div class="kpi-label">Checkout Rate</div>
+                        <div class="kpi-desc">De page views</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Format Comparison -->
+            <div class="format-comparison">
+                <h4><i class="fas fa-balance-scale"></i> Comparación por Formato de Anuncio</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5><i class="fas fa-video"></i> Videos/Reels - Formato Ganador</h5>
+                        <ul>
+                            <li><strong>82% de las impresiones</strong> (6,961 de 8,472)</li>
+                            <li><strong>92% de los clicks</strong> (118 de 128)</li>
+                            <li><strong>85% de la inversión</strong> ($254 de $297)</li>
+                            <li><strong>CTR promedio: 2.69%</strong></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h5><i class="fas fa-image"></i> Imágenes - Complemento</h5>
+                        <ul>
+                            <li><strong>18% de las impresiones</strong> (1,511)</li>
+                            <li><strong>8% de los clicks</strong> (10)</li>
+                            <li><strong>15% de la inversión</strong> ($43.51)</li>
+                            <li><strong>CTR: 1.72%</strong></li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -301,14 +338,14 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="chart-container">
-                        <div class="chart-title">Performance por Conjunto de Anuncios</div>
-                        <canvas id="adsetPerformanceChart"></canvas>
+                        <div class="chart-title">Performance por Anuncio Activo</div>
+                        <canvas id="adsPerformanceChart"></canvas>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="chart-container">
-                        <div class="chart-title">Top 5 Anuncios por Clics</div>
-                        <canvas id="topAdsChart"></canvas>
+                        <div class="chart-title">Distribución de Impresiones vs Clicks</div>
+                        <canvas id="impressionsClicksChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -316,37 +353,14 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="chart-container">
-                        <div class="chart-title">CTR por Formato de Anuncio</div>
-                        <canvas id="formatCTRChart"></canvas>
+                        <div class="chart-title">Funnel de Conversión</div>
+                        <canvas id="conversionFunnelChart"></canvas>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="chart-container">
-                        <div class="chart-title">Distribución de Inversión</div>
-                        <canvas id="spendDistributionChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Winners Section -->
-            <div class="winners-section">
-                <h3 class="text-center mb-4"><span class="emoji-large">🏆</span>Anuncios Ganadores por Conjunto</h3>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="winner-card">
-                            <div class="winner-badge">🥇 Miami Event Heroes Broad</div>
-                            <h6><strong>Reel 1</strong></h6>
-                            <p><strong>335 clics</strong> | CTR: <strong>3.45%</strong> | Alcance: 12,020</p>
-                            <small>💡 El formato video domina con más del doble de CTR que imágenes</small>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="winner-card">
-                            <div class="winner-badge">🎯 Retargeting Miami Event</div>
-                            <h6><strong>Reel Promo 1_V1</strong></h6>
-                            <p><strong>17 clics</strong> | CTR: <strong>3.07%</strong> | Alcance: 985</p>
-                            <small>🔥 Mejor performance en retargeting - audiencia cálida responde mejor</small>
-                        </div>
+                        <div class="chart-title">Métricas de Eficiencia</div>
+                        <canvas id="efficiencyChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -355,46 +369,60 @@
             <div class="row">
                 <div class="col-12">
                     <div class="performance-table">
-                        <h4 class="chart-title" style="padding: 25px 0;">Análisis Detallado de Formatos</h4>
+                        <h4 class="chart-title" style="padding: 25px 0;">Análisis Detallado por Anuncio</h4>
                         <table class="table table-hover">
                             <thead>
                                 <tr>
+                                    <th>Anuncio</th>
                                     <th>Formato</th>
-                                    <th>Anuncios</th>
-                                    <th>Clics Totales</th>
-                                    <th>CTR Promedio</th>
                                     <th>Alcance</th>
+                                    <th>Impresiones</th>
+                                    <th>Clicks</th>
+                                    <th>CTR</th>
                                     <th>Inversión</th>
-                                    <th>Eficiencia</th>
+                                    <th>Performance</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><span class="badge" style="background: #FF1493; color: white;"><i class="fas fa-video"></i> Reels</span></td>
-                                    <td>4 variaciones</td>
-                                    <td><strong>438</strong></td>
-                                    <td><strong>3.46%</strong></td>
-                                    <td>18,484</td>
-                                    <td>$746.67</td>
-                                    <td><span class="badge bg-success">🔥 Champion</span></td>
+                                <tr class="table-success">
+                                    <td><strong>Reel 1</strong></td>
+                                    <td><span class="badge bg-primary">Video</span></td>
+                                    <td>2,934</td>
+                                    <td><strong>5,274</strong></td>
+                                    <td><strong>96</strong></td>
+                                    <td><strong>2.94%</strong></td>
+                                    <td>$189.89</td>
+                                    <td><span class="metric-badge badge-excellent">🏆 LÍDER</span></td>
                                 </tr>
-                                <tr>
-                                    <td><span class="badge" style="background: #00D4FF; color: white;"><i class="fas fa-image"></i> Imágenes</span></td>
-                                    <td>4 variaciones</td>
-                                    <td><strong>155</strong></td>
-                                    <td>1.65%</td>
-                                    <td>8,252</td>
-                                    <td>$331.21</td>
-                                    <td><span class="badge bg-warning">⚡ Mejorable</span></td>
+                                <tr class="table-info">
+                                    <td><strong>Reel Promo 1</strong></td>
+                                    <td><span class="badge bg-primary">Video</span></td>
+                                    <td>584</td>
+                                    <td>1,169</td>
+                                    <td>17</td>
+                                    <td>2.57%</td>
+                                    <td>$42.59</td>
+                                    <td><span class="metric-badge badge-good">⭐ SÓLIDO</span></td>
                                 </tr>
-                                <tr>
-                                    <td><span class="badge" style="background: #FF8C00; color: white;"><i class="fas fa-images"></i> Carrusel</span></td>
-                                    <td>1 variación</td>
-                                    <td><strong>73</strong></td>
-                                    <td>1.66%</td>
-                                    <td>4,754</td>
-                                    <td>$136.90</td>
-                                    <td><span class="badge bg-info">💎 Potencial</span></td>
+                                <tr class="table-warning">
+                                    <td><strong>IMG_V2</strong></td>
+                                    <td><span class="badge bg-success">Imagen</span></td>
+                                    <td>710</td>
+                                    <td>1,511</td>
+                                    <td>10</td>
+                                    <td>1.72%</td>
+                                    <td>$43.51</td>
+                                    <td><span class="metric-badge badge-average">💫 BUENO</span></td>
+                                </tr>
+                                <tr class="table-secondary">
+                                    <td><strong>Reel Promo 2</strong></td>
+                                    <td><span class="badge bg-primary">Video</span></td>
+                                    <td>307</td>
+                                    <td>518</td>
+                                    <td>5</td>
+                                    <td>1.54%</td>
+                                    <td>$21.56</td>
+                                    <td><span class="metric-badge badge-average">📊 TESTING</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -402,71 +430,47 @@
                 </div>
             </div>
 
-            <!-- Format Analysis -->
-            <div class="format-analysis">
-                <h4><span class="emoji-large">📊</span>Análisis por Formato Creativo</h4>
+            <!-- Insights Section -->
+            <div class="insights-section">
+                <h4><i class="fas fa-lightbulb"></i> Data Intelligence para Campaña de Podcast</h4>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="stat-highlight">
-                            <h6><i class="fas fa-video"></i> Reels - El Formato Ganador</h6>
+                            <h6><i class="fas fa-video"></i> Videos Dominan Engagement</h6>
                             <ul>
-                                <li><strong>CTR 2.1x superior</strong> vs imágenes estáticas</li>
-                                <li><strong>65% de los clics totales</strong> con solo 4 variaciones</li>
-                                <li>Mejor performer: <strong>Reel 1</strong> con 3.45% CTR</li>
+                                <li><strong>Reel 1</strong> generó 75% de clicks totales</li>
+                                <li><strong>CTR promedio videos:</strong> 2.69%</li>
+                                <li><strong>Formato preferido</strong> por la audiencia</li>
+                                <li><strong>Aplicar en podcast:</strong> Contenido visual dinámico</li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="stat-highlight">
-                            <h6><i class="fas fa-bullseye"></i> Target Audience Performance</h6>
+                            <h6><i class="fas fa-bullseye"></i> Retargeting Efectivo</h6>
                             <ul>
-                                <li><strong>Broad Audience:</strong> 584 clics (87% del total)</li>
-                                <li><strong>Retargeting:</strong> 87 clics (CTR superior 2.68%)</li>
-                                <li>Audiencia receptiva al <strong>contenido de evento</strong></li>
+                                <li><strong>Frecuencia óptima:</strong> 2.46 impresiones/usuario</li>
+                                <li><strong>755% page view rate</strong> (sobre clicks)</li>
+                                <li><strong>Alto interés</strong> demostrado</li>
+                                <li><strong>Aplicar en podcast:</strong> Audiencia pre-calentada</li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="stat-highlight">
-                            <h6><i class="fas fa-chart-line"></i> Eficiencia de Campaña</h6>
+                            <h6><i class="fas fa-chart-line"></i> Métricas de Calidad</h6>
                             <ul>
-                                <li><strong>CPM competitivo:</strong> $22.88 vs benchmark $25-35</li>
-                                <li><strong>CTR sobre promedio:</strong> 2.63% vs industria 1.8%</li>
-                                <li><strong>Alcance premium:</strong> 19,893 usuarios únicos</li>
+                                <li><strong>CPM eficiente:</strong> $35.12</li>
+                                <li><strong>CPC competitivo:</strong> $2.32</li>
+                                <li><strong>Cost per page view:</strong> $0.31</li>
+                                <li><strong>Aplicar en podcast:</strong> Presupuesto optimizado</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Insights Section -->
-            <div class="insights-section">
-                <h4><span class="emoji-large">💡</span>Insights Clave y Recomendaciones</h4>
-                <div class="row">
-                    <div class="col-md-4">
-                        <h6><span class="emoji-large">🎯</span>Lo que más funciona</h6>
-                        <ul>
-                            <li><strong>Formato Reel</strong> genera 2x más engagement</li>
-                            <li><strong>Broad Audience</strong> responde mejor que segmentaciones estrictas</li>
-                            <li><strong>Retargeting</strong> muestra CTR superior (2.68%)</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-4">
-                        <h6><span class="emoji-large">🚀</span>Oportunidades de optimización</h6>
-                        <ul>
-                            <li>Crear <strong>más variaciones de Reel 1</strong></li>
-                            <li>Expandir <strong>audiencia de retargeting</strong></li>
-                            <li>Testar <strong>carruseles con video</strong> en primera slide</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-4">
-                        <h6><span class="emoji-large">📈</span>Próxima fase</h6>
-                        <ul>
-                            <li>Enfocar <strong>80% presupuesto en formato Reel</strong></li>
-                            <li>Crear <strong>variaciones con diferentes hooks</strong></li>
-                            <li>Implementar <strong>pixel de conversión</strong> para eventos</li>
-                        </ul>
-                    </div>
+                <div class="mt-4 p-3" style="background: rgba(255,255,255,0.1); border-radius: 10px;">
+                    <h5><i class="fas fa-podcast"></i> Learnings para Campaña de Podcast:</h5>
+                    <p><strong>Data Valiosa Recopilada:</strong> La campaña Miami Event proporcionó insights clave sobre preferencias de formato (videos superiores), comportamiento de retargeting y métricas de eficiencia. Esta inteligencia será fundamental para estructurar la campaña de podcast con mayor precisión y ROI proyectado.</p>
                 </div>
             </div>
         </div>
@@ -477,17 +481,26 @@
         Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
         Chart.defaults.color = '#666';
 
-        // Performance por Conjunto de Anuncios
-        const adsetCtx = document.getElementById('adsetPerformanceChart').getContext('2d');
-        new Chart(adsetCtx, {
+        // Colores Miami
+        const miamiColors = ['#00b4d8', '#ff6b6b', '#06ffa5', '#8338ec', '#ffbe0b'];
+
+        // Datos de anuncios activos
+        const adNames = ['Reel 1', 'IMG_V2', 'Reel Promo 1', 'Reel Promo 2'];
+        const impressions = [5274, 1511, 1169, 518];
+        const clicks = [96, 10, 17, 5];
+        const spend = [189.89, 43.51, 42.59, 21.56];
+
+        // Chart 1: Performance por Anuncio
+        const adsCtx = document.getElementById('adsPerformanceChart').getContext('2d');
+        new Chart(adsCtx, {
             type: 'bar',
             data: {
-                labels: ['Broad Audience', 'Retargeting'],
+                labels: adNames,
                 datasets: [{
-                    label: 'Clics',
-                    data: [584, 87],
-                    backgroundColor: ['#FF1493', '#00D4FF'],
-                    borderRadius: 12,
+                    label: 'Clicks',
+                    data: clicks,
+                    backgroundColor: miamiColors,
+                    borderRadius: 8,
                     borderWidth: 2
                 }]
             },
@@ -498,36 +511,65 @@
             }
         });
 
-        // Top 5 Anuncios
-        const topAdsCtx = document.getElementById('topAdsChart').getContext('2d');
-        new Chart(topAdsCtx, {
-            type: 'horizontalBar',
+        // Chart 2: Impresiones vs Clicks
+        const impClicksCtx = document.getElementById('impressionsClicksChart').getContext('2d');
+        new Chart(impClicksCtx, {
+            type: 'scatter',
             data: {
-                labels: ['Reel 1', 'IMG_V1', 'Carrusel_V1', 'Reel Promo 1_V1', 'Reel Promo 1_V1 (RT)'],
                 datasets: [{
-                    label: 'Clics',
-                    data: [335, 113, 68, 25, 17],
-                    backgroundColor: ['#FF1493', '#00D4FF', '#FF8C00', '#FFC107', '#28A745'],
+                    label: 'Anuncios',
+                    data: adNames.map((name, i) => ({x: impressions[i], y: clicks[i], label: name})),
+                    backgroundColor: miamiColors,
+                    pointRadius: [15, 10, 12, 8]
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { title: { display: true, text: 'Impresiones' } },
+                    y: { title: { display: true, text: 'Clicks' } }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${adNames[context.dataIndex]}: ${context.parsed.x} imp., ${context.parsed.y} clicks`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart 3: Funnel de Conversión
+        const funnelCtx = document.getElementById('conversionFunnelChart').getContext('2d');
+        new Chart(funnelCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Impresiones', 'Clicks', 'Page Views', 'Checkouts'],
+                datasets: [{
+                    label: 'Funnel',
+                    data: [8472, 128, 967, 77],
+                    backgroundColor: ['#00b4d8', '#ff6b6b', '#06ffa5', '#8338ec'],
                     borderRadius: 8
                 }]
             },
             options: {
-                indexAxis: 'y',
                 responsive: true,
                 plugins: { legend: { display: false } },
-                scales: { x: { beginAtZero: true } }
+                scales: { y: { beginAtZero: true, type: 'logarithmic' } }
             }
         });
 
-        // CTR por Formato
-        const formatCTRCtx = document.getElementById('formatCTRChart').getContext('2d');
-        new Chart(formatCTRCtx, {
+        // Chart 4: Métricas de Eficiencia
+        const efficiencyCtx = document.getElementById('efficiencyChart').getContext('2d');
+        new Chart(efficiencyCtx, {
             type: 'doughnut',
             data: {
-                labels: ['Reels (3.46%)', 'Imágenes (1.65%)', 'Carrusel (1.66%)'],
+                labels: ['CPM ($35.12)', 'CPC ($2.32)', 'Cost/Page View ($0.31)', 'Cost/Checkout ($3.86)'],
                 datasets: [{
-                    data: [3.46, 1.65, 1.66],
-                    backgroundColor: ['#FF1493', '#00D4FF', '#FF8C00'],
+                    data: [35.12, 2.32, 0.31, 3.86],
+                    backgroundColor: miamiColors,
                     borderWidth: 4,
                     borderColor: '#fff'
                 }]
@@ -535,28 +577,7 @@
             options: {
                 responsive: true,
                 plugins: {
-                    legend: { position: 'bottom', labels: { padding: 20 } }
-                }
-            }
-        });
-
-        // Distribución de Inversión
-        const spendCtx = document.getElementById('spendDistributionChart').getContext('2d');
-        new Chart(spendCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Broad Audience ($1,049)', 'Retargeting ($193)'],
-                datasets: [{
-                    data: [1049.51, 193.44],
-                    backgroundColor: ['#FF1493', '#00D4FF'],
-                    borderWidth: 3,
-                    borderColor: '#fff'
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { position: 'bottom', labels: { padding: 20 } }
+                    legend: { position: 'bottom', labels: { padding: 15 } }
                 }
             }
         });
@@ -566,11 +587,12 @@
             setTimeout(() => {
                 document.querySelectorAll('.kpi-card').forEach((card, index) => {
                     setTimeout(() => {
-                        card.style.animation = 'fadeIn 0.8s ease-in';
-                    }, index * 150);
+                        card.style.animation = 'slideInUp 0.6s ease-out';
+                    }, index * 100);
                 });
             }, 500);
         });
     </script>
 </body>
 </html>
+
